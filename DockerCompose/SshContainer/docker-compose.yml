@@ -1,0 +1,17 @@
+version: '3.9'
+
+services:
+
+    ssh:
+        # hostname: testainers/sshd-container
+        restart: always
+        container_name: sshd_container
+        image: testainers/sshd-container
+
+        environment:
+            - SSHD_USER=root
+            - SSHD_PASSWORD=root
+
+        ports:
+            - 22022:22/tcp
+            # - <Host_PORT>: <Container_PORT>

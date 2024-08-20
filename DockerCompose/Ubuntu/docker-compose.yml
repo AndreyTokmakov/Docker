@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+
+    test_ubuntu:
+        hostname: test_ubuntu
+        restart: always
+        container_name: test_ubuntu
+        image: ubuntu:latest
+
+        tty: true
+
+        # volumes:
+        #     - /tmp/docker/mysql:/var/lib/mysql
+
+        # environment:
+        #     - PLUTUS_CONFIG=/plutus/configs/connector.config.m2.json
+
+        network_mode: "host"
+
+
+networks:
+    host:
+        name: host
+        external: true
+
+
+#  docker compose exec test_ubuntu /bin/bash

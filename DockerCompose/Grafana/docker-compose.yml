@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+
+    grafana:
+        hostname: grafana
+        restart: always
+        container_name: grafana
+        image: grafana/grafana
+
+        # volumes:
+        #    - /tmp/docker/grafana/var:/var/lib/grafana
+        #    - /tmp/docker/grafana/etc/provisioning:/etc/grafana/provisioning
+
+        environment:
+            - GF_SECURITY_ADMIN_PASSWORD=qwerty12345
+            - GF_AUTH_ANONYMOUS_ENABLED=true
+            - GF_USERS_DEFAULT_THEME=dark
+            - GF_SERVER_DOMAIN=localhost
+            - GF_SERVER_ROOT_URL=http://localhost/grafana
+        #   - GF_SERVER_ROOT_URL=http://localhost:3000/grafana
+            - GF_SERVER_SERVE_FROM_SUB_PATH=true
+
+        ports:
+        #   - 3000:3000
+            - "0.0.0.0:80:3000"
+
+        # user: '472'

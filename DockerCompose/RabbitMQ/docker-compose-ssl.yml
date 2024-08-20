@@ -1,0 +1,42 @@
+version: '3.9'
+
+services:
+
+    broker:
+        hostname: rabbitmq
+        restart: always
+        container_name: rabbit_mq
+        # image: rabbitmq:management
+        image: rabbitmq:3-management
+        security_opt:
+            - seccomp:unconfined
+
+        ports:
+            # AMQP protocol port (SSL)
+            - 5671:5671
+
+            # AMQP protocol port
+            - 5672:5672
+
+            # HTTP management UI (SSL)
+            - 15671:15671
+
+            # HTTP management UI
+            - 15672:15672
+
+        environment:
+            - RABBITMQ_DEFAULT_USER=admin
+            - RABBITMQ_DEFAULT_PASS=qwerty12345
+            # - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbit disk_free_limit 2147483648
+
+            # - RABBITMQ_SSL_CERT_FILE=/etc/ssl/rmq-cert.pem
+            # - RABBITMQ_SSL_KEY_FILE=/etc/ssl/rmq-key.pem
+            # - RABBITMQ_SSL_FAIL_IF_NO_PEER_CERT=false
+            # - RABBITMQ_SSL_VERIFY=verify_none
+
+        volumes:
+            - /tmp/docker/rabbitmq:/var/lib/rabbitmq
+            - /tmp/docker/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+            - /tmp/docker/rabbitmq/ssl/ca_certificate.pem:/etc/ssl/ca_certificate.pem:ro
+            - /tmp/docker/rabbitmq/ssl/server_cert.pem:/etc/ssl/server_cert.pem:ro
+            - /tmp/docker/rabbitmq/ssl/server_key.pem:/etc/ssl/server_key.pem:ro

@@ -1,0 +1,1 @@
+docker-compose up -d mongo_node_1

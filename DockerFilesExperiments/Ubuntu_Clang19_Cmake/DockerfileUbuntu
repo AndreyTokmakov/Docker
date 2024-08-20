@@ -1,0 +1,32 @@
+FROM ubuntu:22.04
+RUN apt-get update && apt-get upgrade -y
+RUN apt-get install -y wget nano git build-essential  \
+    libssl-dev ninja-build zlib1g-dev libpqxx-dev libpq-dev libunwind-dev
+
+# RUN apt-get install -y cmake
+
+WORKDIR /tmp
+
+RUN apt-get install -y lsb-release wget software-properties-common gnupg
+RUN wget https://apt.llvm.org/llvm.sh
+RUN chmod u+x llvm.sh
+RUN ./llvm.sh 19
+
+# FIXME
+# RUN mkdir -p /home/andtokm/DiskS/ProjectsUbuntu/Flatbuffers/flatbuffers
+# COPY /home/andtokm/DiskS/ProjectsUbuntu/Flatbuffers/flatbuffers/flatc /home/andtokm/DiskS/ProjectsUbuntu/Flatbuffers/flatbuffers/flatc
+
+
+# CMAKE
+RUN wget https://github.com/Kitware/CMake/releases/download/v3.29.5/cmake-3.29.5.tar.gz
+RUN tar -zxvf cmake-3.29.5.tar.gz
+WORKDIR /tmp/cmake-3.29.5
+RUN ./bootstrap
+RUN make
+RUN make install
+
+RUN rm -rf /tmp/*
+RUN rm -rf /tmp/cmake-3.29.5/
+
+RUN mkdir /plutus
+WORKDIR /plutus

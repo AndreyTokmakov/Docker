@@ -1,0 +1,21 @@
+version: '3.9'
+
+services:
+
+    database:
+        hostname: mysql
+        restart: always
+        container_name: mysql
+        image: mysql
+        volumes:
+            - /tmp/docker/mysql:/var/lib/mysql
+
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_DATABASE=testdb
+            - MYSQL_USER=admin
+            - MYSQL_PASSWORD=qwerty12345
+
+        ports:
+            - 3306:3306/tcp
+            - 33060:33060/tcp

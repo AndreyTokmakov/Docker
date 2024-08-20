@@ -1,0 +1,13 @@
+version: '3.9'
+
+services:
+
+    logstash:
+        image: docker.elastic.co/logstash/logstash:8.12.0
+        container_name: logstash
+        volumes:
+          - /home/andtokm/Projects/Docker/DockerCompose/LogStash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+          - /home/andtokm/Temp/logs/logstash:/tmp/logs
+        ports:
+          - "5000:5000/udp"
+          - "9600:9600/tcp"

@@ -1,0 +1,17 @@
+version: '3.9'
+
+services:
+
+    test_vol:
+        # hostname: test_vol_container
+        restart: always
+        container_name: test_vol_container
+        command: tail -f /dev/null
+        # image: ubuntu:latest
+
+        build:
+            context: .
+            dockerfile: Dockerfile
+
+        volumes:
+            - /tmp/docker/1/:/tmp

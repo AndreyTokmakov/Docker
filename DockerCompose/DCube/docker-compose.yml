@@ -1,0 +1,98 @@
+version: '3.9'
+
+services:
+
+    database:
+        hostname: mysql
+        restart: always
+        container_name: mysql
+        image: mysql
+        volumes:
+            - /home/andtokm/DiskS/Temp/docker/mysql:/var/lib/mysql
+
+        environment:
+            - MYSQL_ROOT_PASSWORD=qwerty12345
+            - MYSQL_DATABASE=dcube
+            - MYSQL_USER=admin
+            - MYSQL_PASSWORD=qwerty12345
+
+        ports:
+            - 3306:3306/tcp
+            - 33060:33060/tcp
+
+
+    grafana:
+        hostname: grafana
+        restart: always
+        container_name: grafana
+        image: grafana/grafana
+
+        #volumes:
+        #    - /home/andtokm/DiskS/Temp/docker/grafana/var:/var/lib/grafana
+        #    - /home/andtokm/DiskS/Temp/docker/grafana/etc/provisioning:/etc/grafana/provisioning
+
+        environment:
+            - GF_SECURITY_ADMIN_PASSWORD=qwerty12345
+            - GF_AUTH_ANONYMOUS_ENABLED=true
+            - GF_USERS_DEFAULT_THEME=dark
+            - GF_SERVER_DOMAIN=localhost
+            - GF_SERVER_ROOT_URL=http://localhost/grafana
+        #   - GF_SERVER_ROOT_URL=http://localhost:3000/grafana
+            - GF_SERVER_SERVE_FROM_SUB_PATH=true
+
+        ports:
+        #   - 3000:3000
+            - "0.0.0.0:80:3000"
+
+
+    influx:
+        hostname: influx
+        restart: always
+        container_name: influx
+        image: influxdb:latest
+
+        volumes:
+            - /home/andtokm/DiskS/Temp/docker/influxdb/etc/influxdb:/etc/influxdb:ro
+            - /home/andtokm/DiskS/Temp/docker/influxdb/var:/var/lib/influxdb
+
+        environment:
+            # - INFLUXDB_ADMIN_USER=admin
+            # - INFLUXDB_ADMIN_PASSWORD=qwerty12345
+            # - INFLUXDB_DB=telegraf
+            # - INFLUXDB_USER=telegraf
+            # - INFLUXDB_ADMIN_ENABLED=true
+            - DOCKER_INFLUXDB_INIT_MODE=setup
+            - DOCKER_INFLUXDB_INIT_USERNAME=admin
+            - DOCKER_INFLUXDB_INIT_PASSWORD=qwerty12345
+            - DOCKER_INFLUXDB_INIT_ORG=test_organization
+            - DOCKER_INFLUXDB_INIT_BUCKET=my_bucket
+            - DOCKER_INFLUXDB_INIT_RETENTION=1w
+            - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=my-super-secret-auth-token
+
+        ports:
+            - 8089:8089/udp
+            - 8086:8086
+
+
+    broker:
+        hostname: rabbitmq
+        restart: always
+        container_name: rabbit_mq
+        # image: rabbitmq:management
+        image: rabbitmq:3-management
+        security_opt:
+            - seccomp:unconfined
+
+        ports:
+            # AMQP protocol port
+            - 5672:5672
+            # HTTP management UI
+            - 15672:15672
+
+        environment:
+            - RABBITMQ_DEFAULT_USER=admin
+            - RABBITMQ_DEFAULT_PASS=
+            # - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbit disk_free_limit 2147483648
+
+        volumes:
+            - /home/andtokm/DiskS/Temp/docker/rabbitmq:/var/lib/rabbitmq

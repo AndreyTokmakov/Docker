@@ -1,0 +1,20 @@
+version: '3.9'
+
+services:
+
+    mongo_node_1:
+
+        hostname: mongo_node_1
+        restart: always
+        container_name: mongo_node_1
+        image: mongo:7.0.4
+        entrypoint: [ "mongod", "-f", "/etc/mongo/mongod.conf",  "--bind_ip_all", "--replSet", "rs0" ]
+        ports:
+            - 27017:27017
+
+        volumes:
+            - /home/andtokm/DiskS/Docker/DockerCompose/MongoDBCluster_Node1/configs/node:/etc/mongo
+
+        environment:
+            - MONGO_INITDB_ROOT_USERNAME=admin
+            - MONGO_INITDB_ROOT_PASSWORD=admin

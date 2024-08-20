@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+
+    broker:
+        hostname: rabbitmq
+        restart: always
+        container_name: rabbit_mq
+        # image: rabbitmq:management
+        image: rabbitmq:3-management
+        security_opt:
+            - seccomp:unconfined
+
+        ports:
+            # AMQP protocol port
+            - 5672:5672
+            # HTTP management UI
+            - 15672:15672
+
+        environment:
+            - RABBITMQ_DEFAULT_USER=admin
+            - RABBITMQ_DEFAULT_PASS=qwerty12345
+            # - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbit disk_free_limit 2147483648
+
+        volumes:
+            - /tmp/docker/rabbitmq:/var/lib/rabbitmq

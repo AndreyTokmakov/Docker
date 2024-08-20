@@ -1,0 +1,79 @@
+version: '3.9'
+
+services:
+
+    mongo_node_1:
+
+        hostname: mongo_node_1
+        restart: always
+        container_name: mongo_node_1
+        image: mongo
+        entrypoint: [ "mongod", "-f", "/etc/mongo/mongod.conf",  "--bind_ip_all", "--replSet", "rs0" ]
+        # entrypoint: [ "mongod", "-f", "/etc/mongo/mongod.conf", "--auth",  "--bind_ip_all" ]
+        # command: ["mongod", "-f", "/etc/mongo/mongod.conf"]
+
+        ports:
+            - 27017:27017
+
+        networks:
+            - mongoCluster
+
+        volumes:
+            - /home/andtokm/DiskS/Docker/DockerCompose/MongoDBCluster/configs/node1:/etc/mongo
+
+        environment:
+            - MONGO_INITDB_ROOT_USERNAME=admin
+            - MONGO_INITDB_ROOT_PASSWORD=admin
+
+
+    mongo_node_2:
+
+        hostname: mongo_node_2
+        restart: always
+        container_name: mongo_node_2
+        image: mongo
+        entrypoint: [ "mongod", "-f", "/etc/mongo/mongod.conf",  "--bind_ip_all", "--replSet", "rs0" ]
+        # entrypoint: [ "mongod", "-f", "/etc/mongo/mongod.conf", "--auth",  "--bind_ip_all" ]
+        # command: ["mongod", "-f", "/etc/mongo/mongod.conf"]
+
+        ports:
+            - 27018:27017
+
+        networks:
+            - mongoCluster
+
+        volumes:
+            - /home/andtokm/DiskS/Docker/DockerCompose/MongoDBCluster/configs/node2:/etc/mongo
+
+        environment:
+            - MONGO_INITDB_ROOT_USERNAME=admin
+            - MONGO_INITDB_ROOT_PASSWORD=admin
+
+
+    mongo_node_3:
+
+        hostname: mongo_node_3
+        restart: always
+        container_name: mongo_node_3
+        image: mongo
+        entrypoint: [ "mongod", "-f", "/etc/mongo/mongod.conf",  "--bind_ip_all", "--replSet", "rs0" ]
+        # entrypoint: [ "mongod", "-f", "/etc/mongo/mongod.conf", "--auth",  "--bind_ip_all" ]
+        # command: ["mongod", "-f", "/etc/mongo/mongod.conf"]
+
+        ports:
+            - 27019:27017
+
+        networks:
+            - mongoCluster
+
+        volumes:
+            - /home/andtokm/DiskS/Docker/DockerCompose/MongoDBCluster/configs/node3:/etc/mongo
+
+        environment:
+            - MONGO_INITDB_ROOT_USERNAME=admin
+            - MONGO_INITDB_ROOT_PASSWORD=admin
+
+
+networks:
+    mongoCluster:
+        name: mongoCluster

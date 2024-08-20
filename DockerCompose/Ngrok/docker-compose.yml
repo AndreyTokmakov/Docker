@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+
+    broker:
+        hostname: ngrok
+        restart: unless-stopped
+        container_name: ngrok_agent
+        image: ngrok/ngrok:latest
+
+        ports:
+            - 4040:4040
+
+        volumes:
+            # - ./ngrok.yml:/etc/ngrok.yml
+            - ./config:/etc
+
+
+        # environment:
+        #     - PARAM_NAME=admin
+
+        command:
+            - "start"
+            - "--all"
+            - "--config"
+            - "/etc/ngrok.yml"
