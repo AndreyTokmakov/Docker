@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+
+    database:
+        hostname: pg_database
+        restart: always
+        container_name: pg_database
+        image: postgres
+
+        environment:
+            - POSTGRES_USER=admin
+            - POSTGRES_DB=snapshots
+            - POSTGRES_PASSWORD=qwerty12345
+
+        ports:
+            - 5531:5531
+            - 5432:5432
+
+        network_mode: "host"   
+
+
+networks:
+    host:
+        name: host
+        external: true
