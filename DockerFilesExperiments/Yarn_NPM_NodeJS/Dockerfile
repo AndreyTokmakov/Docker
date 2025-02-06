@@ -12,3 +12,6 @@ RUN apt-get install nodejs npm  -y
 
 COPY . /atc-front
 WORKDIR /atc-front
+
+RUN yarn
+RUN cp .env.dev .env.local
