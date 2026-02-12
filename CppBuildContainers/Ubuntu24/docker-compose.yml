@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+
+    ubuntu24_cpp_build:
+        hostname: ubuntu24_cpp_build
+        restart: always
+        container_name: ubuntu24_cpp_build
+        image: ubuntu:24.04
+
+        tty: true
+
+        # volumes:
+        #     - /tmp/docker/mysql:/var/lib/mysql
+
+        # environment:
+        #     - PLUTUS_CONFIG=/plutus/configs/connector.config.m2.json
+
+        network_mode: "host"
+
+
+networks:
+    host:
+        name: host
+        external: true
+

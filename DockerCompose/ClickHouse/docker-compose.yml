@@ -12,9 +12,9 @@ services:
             - "9009:9009" # Secure native client interface (if enabled)
 
         volumes:
-          - /tmp/docker/clickhouse/data:/var/lib/clickhouse             # Persistent data storage
-          - /tmp/docker/clickhouse/logs:/var/log/clickhouse-server      # Persistent logs
-          - /tmp/docker/clickhouse/config:/etc/clickhouse-server/conf.d # Custom configuration
+          - /home/andtokm/DiskS/Temp/docker/clickhouse/data:/var/lib/clickhouse             # Persistent data storage
+          - /home/andtokm/DiskS/Temp/docker/clickhouse/logs:/var/log/clickhouse-server      # Persistent logs
+          - /home/andtokm/DiskS/Temp/docker/clickhouse/config:/etc/clickhouse-server/conf.d # Custom configuration
 
         environment:
             # Optional: Set ClickHouse user and password for initial setup
