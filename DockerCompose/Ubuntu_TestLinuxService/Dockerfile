@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 RUN apt-get update && apt-get upgrade -y
-RUN apt-get install -y wget nano git build-essential openssh-server tcpdump net-tools
+RUN apt-get install -y wget nano git build-essential openssh-server tcpdump net-tools sudo systemd  systemd-sysv
 
 # Create SSH run directory
 RUN mkdir /var/run/sshd
@@ -18,4 +18,14 @@ RUN sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/
     && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin no/' /etc/ssh/sshd_config
 
 # Start SSH daemon
-CMD ["/usr/sbin/sshd", "-D"]
+# CMD ["/usr/sbin/sshd", "-D"]
+
+# enable ssh
+RUN systemctl enable ssh
+
+# systemd requires this
+STOPSIGNAL SIGRTMIN+3
+
+VOLUME ["/sys/fs/cgroup"]
+
+CMD ["/sbin/init"]

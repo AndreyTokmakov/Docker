@@ -6,14 +6,15 @@ services:
         restart: always
         container_name: linux_service
         image: linux_service_image
+        privileged: true
 
         ports:
             - 22022:22
 
         # tty: true
 
-        # volumes:
-        #     - /tmp/docker/mysql:/var/lib/mysql
+        volumes:
+          - /sys/fs/cgroup:/sys/fs/cgroup:rw
 
         # environment:
         #     - PLUTUS_CONFIG=/plutus/configs/connector.config.m2.json
