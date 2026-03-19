@@ -64,6 +64,7 @@ RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y \
     git \
     make \
+    build-essential \
     ninja-build \
     libstdc++6 \
     libgcc-s1 \
