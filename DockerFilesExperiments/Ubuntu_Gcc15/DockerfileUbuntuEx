@@ -1,0 +1,82 @@
+# =========================
+# 1️⃣ BUILD STAGE
+# =========================
+FROM ubuntu:22.04 AS builder
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y \
+    wget \
+    build-essential \
+    libssl-dev \
+    ninja-build \
+    zlib1g-dev \
+    libpqxx-dev \
+    libpq-dev \
+    libmpc-dev \
+    flex \
+    bison \
+    texinfo \
+    libgmp-dev \
+    libmpfr-dev \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /tmp
+
+# ----- GCC -----
+RUN wget https://github.com/gcc-mirror/gcc/archive/refs/tags/releases/gcc-15.2.0.tar.gz && \
+    tar -xf gcc-15.2.0.tar.gz
+
+WORKDIR /tmp/gcc-releases-gcc-15.2.0
+
+RUN ./contrib/download_prerequisites
+
+RUN mkdir build && cd build && \
+    ../configure \
+        --prefix=/opt/gcc-15.2 \
+        --disable-multilib \
+        --enable-languages=c,c++ \
+        --program-suffix=-15.2 && \
+    make -j$(nproc) && \
+    make install-strip
+
+# ----- CMAKE -----
+WORKDIR /tmp
+
+RUN wget https://github.com/Kitware/CMake/releases/download/v3.29.5/cmake-3.29.5.tar.gz && \
+    tar -xf cmake-3.29.5.tar.gz
+
+WORKDIR /tmp/cmake-3.29.5
+
+RUN ./bootstrap && \
+    make -j$(nproc) && \
+    make install
+
+# =========================
+# 2️⃣ RUNTIME STAGE
+# =========================
+FROM ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Только runtime зависимости (минимум)
+RUN apt-get update && apt-get install -y \
+    libstdc++6 \
+    libgcc-s1 \
+    libgmp10 \
+    libmpfr6 \
+    libmpc3 \
+    zlib1g \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Копируем только результат сборки
+COPY --from=builder /opt/gcc-15.2 /opt/gcc-15.2
+COPY --from=builder /usr/local /usr/local
+
+# PATH
+ENV PATH="/opt/gcc-15.2/bin:/usr/local/bin:${PATH}"
+
+# Проверка по умолчанию
+CMD ["bash"]

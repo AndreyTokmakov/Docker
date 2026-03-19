@@ -17,6 +17,8 @@ RUN export PATH=/usr/gcc15.2/bin:${PATH}
 
 # ----- CMAKE ------
 
+WORKDIR /tmp
+
 RUN wget https://github.com/Kitware/CMake/releases/download/v3.29.5/cmake-3.29.5.tar.gz
 RUN tar -zxvf cmake-3.29.5.tar.gz
 WORKDIR /tmp/cmake-3.29.5
