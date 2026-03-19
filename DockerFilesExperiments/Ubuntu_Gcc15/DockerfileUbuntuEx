@@ -60,8 +60,8 @@ FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Только runtime зависимости (минимум)
 RUN apt-get update && apt-get install -y \
+    git \
     libstdc++6 \
     libgcc-s1 \
     libgmp10 \
@@ -71,12 +71,19 @@ RUN apt-get update && apt-get install -y \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Копируем только результат сборки
+# Copy toolchains
 COPY --from=builder /opt/gcc-15.2 /opt/gcc-15.2
 COPY --from=builder /usr/local /usr/local
 
-# PATH
+# Make gcc-15.2 default via alternatives
+RUN update-alternatives --install /usr/bin/gcc gcc /opt/gcc-15.2/bin/gcc-15.2 100 && \
+    update-alternatives --install /usr/bin/g++ g++ /opt/gcc-15.2/bin/g++-15.2 100 && \
+    update-alternatives --install /usr/bin/c++ c++ /opt/gcc-15.2/bin/c++-15.2 100
+
+# Optional: also for cpp
+RUN update-alternatives --install /usr/bin/cpp cpp /opt/gcc-15.2/bin/cpp-15.2 100
+
+# PATH (на всякий случай)
 ENV PATH="/opt/gcc-15.2/bin:/usr/local/bin:${PATH}"
 
-# Проверка по умолчанию
 CMD ["bash"]
