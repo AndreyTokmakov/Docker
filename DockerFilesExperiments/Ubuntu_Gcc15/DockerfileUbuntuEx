@@ -87,7 +87,10 @@ RUN update-alternatives --install /usr/bin/gcc gcc /opt/gcc-15.2/bin/gcc-15.2 10
 # Optional: also for cpp
 RUN update-alternatives --install /usr/bin/cpp cpp /opt/gcc-15.2/bin/cpp-15.2 100
 
-# PATH (на всякий случай)
+# Update LD_LIBRARY:
+RUN export LD_LIBRARY_PATH=/opt/gcc-15.2/lib64
+
+# Update PATH:
 ENV PATH="/opt/gcc-15.2/bin:/usr/local/bin:${PATH}"
 
 CMD ["bash"]
