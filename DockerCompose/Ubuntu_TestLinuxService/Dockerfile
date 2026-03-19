@@ -1,6 +1,20 @@
 FROM ubuntu:latest
+
+# Update system and install packages
 RUN apt-get update && apt-get upgrade -y
-RUN apt-get install -y wget nano git build-essential openssh-server tcpdump net-tools sudo systemd  systemd-sysv
+RUN apt-get install -y \
+        wget \
+        nano \
+        git \
+        build-essential \
+        openssh-server \
+        tcpdump \
+        net-tools \
+        sudo \
+        systemd \
+        systemd-sysv \
+        nginx
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Create SSH run directory
 RUN mkdir /var/run/sshd
@@ -17,14 +31,13 @@ RUN useradd -m -s /bin/bash ${USERNAME} \
 RUN sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config \
     && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin no/' /etc/ssh/sshd_config
 
-# Start SSH daemon
-# CMD ["/usr/sbin/sshd", "-D"]
-
-# enable ssh
+# Enable services in systemd
 RUN systemctl enable ssh
+RUN systemctl enable nginx
 
-# systemd requires this
-STOPSIGNAL SIGRTMIN+3
+# systemd requirements
+# STOPSIGNAL SIGRTMIN+3
+VOLUME ["/sys/fs/cgroup"]
 
 VOLUME ["/sys/fs/cgroup"]
 

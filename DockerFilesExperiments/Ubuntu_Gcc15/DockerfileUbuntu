@@ -1,0 +1,32 @@
+FROM ubuntu:22.04
+RUN apt-get update && apt-get upgrade -y
+RUN apt-get install -y wget nano git build-essential  \
+    libssl-dev ninja-build zlib1g-dev libpqxx-dev libpq-dev libmpc-dev flex
+
+WORKDIR /tmp
+
+RUN wget https://github.com/gcc-mirror/gcc/archive/refs/tags/releases/gcc-15.2.0.tar.gz
+RUN tar -xf gcc-15.2.0.tar.gz
+
+WORKDIR /tmp/gcc-releases-gcc-15.2.0
+
+RUN ./configure -v --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu --prefix=/usr/gcc15.2 --disable-multilib --program-suffix=-15.2
+RUN make -j8
+RUN make install-strip
+RUN export PATH=/usr/gcc15.2/bin:${PATH}
+
+# ----- CMAKE ------
+
+RUN wget https://github.com/Kitware/CMake/releases/download/v3.29.5/cmake-3.29.5.tar.gz
+RUN tar -zxvf cmake-3.29.5.tar.gz
+WORKDIR /tmp/cmake-3.29.5
+RUN ./bootstrap
+RUN make
+RUN make install
+
+# ----- CLEAN UP ------
+
+RUN rm -rf /tmp/cmake-3.29.5/
+RUN rm -rf /tmp/gcc-15.2.0.tar.gz
+RUN rm -rf /tmp/gcc-releases-gcc-15.2.0/*
+RUN rm -rf /tmp/gcc-releases-gcc-15.2.0

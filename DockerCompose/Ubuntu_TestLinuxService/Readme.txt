@@ -11,7 +11,8 @@ docker compose up -d linux_service
 docker compose down
 docker compose ps
 
-----------------------------------------------------------------------------------------------
+----------------------------------dtr '\\0' ' ' < /proc/107/cmdlinehexdump -C /proc/107cmdline
+jf -h --output=source,size,used,avail,target -x tmpfs -x devtmpfsсфе ------------------------------------------------------------
 ----------------------------------------------------------------------------------------------
 
 docker exec -it linux_service /bin/bash
@@ -28,5 +29,4 @@ ssh test@127.0.0.1 -p 22022
                             systemctl
 ----------------------------------------------------------------------------------------------
 
-
-systemctl list-unit-files          # List serviec
+systemctl liust-unit-files          # List serviсу

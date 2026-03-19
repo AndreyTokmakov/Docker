@@ -9,8 +9,8 @@ services:
         privileged: true
 
         ports:
-            - 22022:22
-
+          - "22022:22"   # SSH 🔐
+          - "8888:80"    # nginx 🌐
         # tty: true
 
         volumes:
