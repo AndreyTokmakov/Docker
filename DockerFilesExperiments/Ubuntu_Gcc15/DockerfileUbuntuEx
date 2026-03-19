@@ -60,8 +60,11 @@ FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get upgrade -y
+RUN apt-get install -y \
     git \
+    make \
+    ninja-build \
     libstdc++6 \
     libgcc-s1 \
     libgmp10 \
